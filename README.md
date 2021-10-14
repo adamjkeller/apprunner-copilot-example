@@ -65,3 +65,26 @@ curl -s "$lb_url/user/?first=Sheldon&last=Cooper"
 ```bash
 curl -s $lb_url/all_users
 ```
+
+#### Load test the application and watch it scale
+
+First, you will need a tool to load test the application.
+For simplicity, I use [hey](https://github.com/rakyll/hey).
+
+Run the following command to trigger 500 concurrent workers and 200k requests:
+
+```bash
+hey -n 200000 -c 500 https://dev.demo.adamjkeller.com/health
+```
+
+Head to the App Runner console and check out the metrics.
+Watch the request count and Active instances metrics.
+As the request count grows, active instances will begin to scale up to meet the demand.
+
+## Cleanup
+
+Run the following command to clean up the resources in the environment:
+
+```bash
+copilot app delete --name apprunner-demo --yes
+```
