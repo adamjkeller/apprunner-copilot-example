@@ -1,4 +1,4 @@
-# AWS App Runner using AWS Copilot CLI Demo
+# Deploying a web service to AWS App Runner using the AWS Copilot CLI
 
 ## Create our application
 
