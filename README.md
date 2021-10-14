@@ -51,8 +51,12 @@ Now you can query the application by running the following commands:
 
 #### Query specific user
 
+```bash
 curl -s 'http://<url>/user/?first=Sheldon&last=Cooper'
+```
 
 #### Query all users
 
+```bash
 curl -s http://<url>/all_users
+```
