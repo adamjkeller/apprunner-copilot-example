@@ -81,6 +81,47 @@ Head to the App Runner console and check out the metrics.
 Watch the request count and Active instances metrics.
 As the request count grows, active instances will begin to scale up to meet the demand.
 
+## Deploy a CI/CD Pipeline
+
+#### Create a fork of this repo
+
+```bash
+git remote add upstream <your-github-fork>
+git push upstream HEAD
+```
+
+#### OPTIONAL: Create a production environment to demonstrate multi-environment deployments
+
+```bash
+copilot env init --name prod --profile default --prod
+```
+
+#### Initialize the pipeline, push the manifest to your fork, and build the pipeline
+
+```bash
+copilot pipeline init --app apprunner-demo --environments "test,prod" --git-branch main --url <git-remote-url-here>
+```
+
+#### Commit the pipeline configuration, and push to your repository
+
+```bash
+git add copilot
+git commit -m "Adding copilot pipeline configuration"
+git push
+```
+
+#### Deploy the pipeline!
+
+```bash
+copilot pipeline update --yes
+```
+
+#### Check status of pipeline
+
+```bash
+copilot pipeline status
+```
+
 ## Cleanup
 
 Run the following command to clean up the resources in the environment:
