@@ -8,8 +8,8 @@ def get_region():
     try:
         region = loads(get(f'{getenv("ECS_CONTAINER_METADATA_URI_V4")}/task').text).get('AvailabilityZone')[:-1]
         print(region)
-        #region = loads(get('http://169.254.169.254/latest/dynamic/instance-identity/document').text).get('region')
     except:
+        print("Unable to source region from metadata, defaulting to us-east-1")
         region = 'us-east-1'
     return region
 
@@ -21,7 +21,7 @@ class UserModel(Model):
         table_name = getenv('USERS_NAME')
         region = get_region()
         
-    email = UnicodeAttribute(null=True)
-    phone = UnicodeAttribute(null=True)
+    twitter_handle = UnicodeAttribute(null=True)
+    github_handle = UnicodeAttribute(null=True)
     first_name = UnicodeAttribute(hash_key=True)
     last_name = UnicodeAttribute(range_key=True)

@@ -39,8 +39,8 @@ def return_user_data(first: str, last: str):
         return JSONResponse({
             "FirstName": user_details.first_name,
             "LastName": user_details.last_name,
-            "PhoneNumber": user_details.phone,
-            "EmailAddress": user_details.email
+            "TwitterHandle": user_details.twitter_handle,
+            "GithubHandle": user_details.github_handle
         })
     except:
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"Response": "User not found"})
@@ -53,8 +53,8 @@ def get_all_users():
         return_data.append({
             "FirstName": user_details.first_name,
             "LastName": user_details.last_name,
-            "PhoneNumber": user_details.phone,
-            "EmailAddress": user_details.email
+            "TwitterHandle": user_details.twitter_handle,
+            "GithubHandle": user_details.github_handle
         })
     return return_data
 
@@ -65,10 +65,10 @@ def load_data():
             csv_data = csv.reader(csvfile)
             for row in csv_data:
                 UserModel(
-                    first_name=row[0], 
-                    last_name=row[1],
-                    email=row[2],
-                    phone=row[3]
+                    last_name=row[0],
+                    first_name=row[1], 
+                    twitter_handle=row[2],
+                    github_handle=row[3]
                 ).save()
         return JSONResponse(status_code=status.HTTP_200_OK, content={"Status": "Success"})
     except Exception as e:
