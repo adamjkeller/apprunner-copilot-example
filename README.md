@@ -24,7 +24,7 @@ copilot env init --name test --profile default --default-config
 copilot svc init --name user-api --svc-type "Request-Driven Web Service" --dockerfile ./Dockerfile
 ```
 
-## Create our NoSQL Database table
+## Create our DynamoDB table
 
 ```bash
 copilot storage init -n users -t DynamoDB -w user-api --partition-key first_name:S --sort-key last_name:S --no-lsi
@@ -57,7 +57,7 @@ Now you can query the application by running the following commands:
 #### Query specific user
 
 ```bash
-curl -s "$lb_url/user/?first=Sheldon&last=Cooper"
+curl -s "$lb_url/user/?first=adam&last=keller"
 ```
 
 #### Query all users
@@ -74,7 +74,7 @@ For simplicity, I use [hey](https://github.com/rakyll/hey).
 Run the following command to trigger 500 concurrent workers and 200k requests:
 
 ```bash
-hey -n 200000 -c 500 https://dev.demo.adamjkeller.com/health
+hey -n 2000 -c 500 $lb_url/health
 ```
 
 Head to the App Runner console and check out the metrics.
