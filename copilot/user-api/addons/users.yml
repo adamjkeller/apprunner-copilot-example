@@ -1,0 +1,69 @@
+Parameters:
+  App:
+    Type: String
+    Description: Your application's name.
+  Env:
+    Type: String
+    Description: The environment name your service, job, or workflow is being deployed to.
+  Name:
+    Type: String
+    Description: The name of the service, job, or workflow being deployed.
+Resources:
+  users:
+    Metadata:
+      'aws:copilot:description': 'An Amazon DynamoDB table for users'
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${App}-${Env}-${Name}-users
+      AttributeDefinitions:
+        - AttributeName: first_name
+          AttributeType: "S"
+        - AttributeName: last_name
+          AttributeType: "S"
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: first_name
+          KeyType: HASH
+        - AttributeName: last_name
+          KeyType: RANGE
+
+  usersAccessPolicy:
+    Metadata:
+      'aws:copilot:description': 'An IAM ManagedPolicy for your service to access the users db'
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: !Sub
+        - Grants CRUD access to the Dynamo DB table ${Table}
+        - { Table: !Ref users }
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: DDBActions
+            Effect: Allow
+            Action:
+              - dynamodb:BatchGet*
+              - dynamodb:DescribeStream
+              - dynamodb:DescribeTable
+              - dynamodb:Get*
+              - dynamodb:Query
+              - dynamodb:Scan
+              - dynamodb:BatchWrite*
+              - dynamodb:Create*
+              - dynamodb:Delete*
+              - dynamodb:Update*
+              - dynamodb:PutItem
+            Resource: !Sub ${ users.Arn}
+          - Sid: DDBLSIActions
+            Action:
+              - dynamodb:Query
+              - dynamodb:Scan
+            Effect: Allow
+            Resource: !Sub ${ users.Arn}/index/*
+
+Outputs:
+  usersName:
+    Description: "The name of this DynamoDB."
+    Value: !Ref users
+  usersAccessPolicy:
+    Description: "The IAM::ManagedPolicy to attach to the task role."
+    Value: !Ref usersAccessPolicy
