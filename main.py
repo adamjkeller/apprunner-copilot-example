@@ -35,7 +35,7 @@ def return_user_data(first: str, last: str):
     Returns user information for a specific user
     """
     try:
-        user_details = get_user_details(first_name=first, last_name=last)[0]
+        user_details = get_user_details(first_name=first.lower(), last_name=last.lower())[0]
         return JSONResponse({
             "FirstName": user_details.first_name.lower(),
             "LastName": user_details.last_name.lower(),
