@@ -37,10 +37,10 @@ def return_user_data(first: str, last: str):
     try:
         user_details = get_user_details(first_name=first, last_name=last)[0]
         return JSONResponse({
-            "FirstName": user_details.first_name,
-            "LastName": user_details.last_name,
-            "TwitterHandle": user_details.twitter_handle,
-            "GithubHandle": user_details.github_handle
+            "FirstName": user_details.first_name.lower(),
+            "LastName": user_details.last_name.lower(),
+            "TwitterHandle": user_details.twitter_handle.lower(),
+            "GithubHandle": user_details.github_handle.lower()
         })
     except:
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"Response": "User not found"})
